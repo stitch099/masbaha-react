@@ -1,20 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./style.css";
-import Counter from "./Message";
+import Counter from "./Counter";
 import {
   WhatsappShareButton,
   WhatsappIcon,
 } from "react-share";
+import "./style.css";
+import "bootstrap/dist/css/bootstrap.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faX, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+
 
 const LOCAL_STORAGE_KEY = "counter";
 
 function App() {
   const shareUrl = 'https://masbaha2.web.app/';
 
-  const [ data, setData ] =  useState([
-    { title: 'hamdellah', id: Math.floor(Math.random() * 1000000) },
-    { title: 'subhanallah', id: Math.floor(Math.random() * 1000000) },
-    { title: 'laa elah ela allah', id: Math.floor(Math.random() * 1000000) },
+  const [data, setData] = useState([
+    { title: 'الحمدلله', id: Math.floor(Math.random() * 1000000) },
+    { title: 'سبحان الله', id: Math.floor(Math.random() * 1000000) },
+    { title: 'الله وأكبر', id: Math.floor(Math.random() * 1000000) },
   ]);
 
   const newData = useRef();
@@ -22,16 +26,16 @@ function App() {
   useEffect(() => {
     let storedData = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (storedData) {
-      try{
+      try {
         setData(JSON.parse(storedData));
-      }catch(e){
+      } catch (e) {
         console.log(e);
       }
-    }else{
+    } else {
       setData(data)
     }
   }, [])
-  
+
   const toggleVisibility = (id) => {
     const dataNew = data.filter((item) => item.id !== id);
     setData(dataNew);
@@ -40,9 +44,9 @@ function App() {
   const handleAddCounter = () => {
     let title = newData.current.value;
     let newCounter = { title: title, id: Math.floor(Math.random() * 1000000) };
-    if (title === "") { 
+    if (title === "") {
       alert("Please enter a tasbeeh");
-    }else{
+    } else {
       let counter = [...data, newCounter];
       setData(counter);
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(counter));
@@ -53,23 +57,31 @@ function App() {
 
 
   return (
-    <>
+
+    <div className="contain">
       <WhatsappShareButton url={shareUrl}>
         <WhatsappIcon size={32} round />
       </WhatsappShareButton>
-      <br />
-      <input ref={newData} type="text" />
-      <button onClick={handleAddCounter}>add</button>
-      {data.map((e, i) => {
-        return <Counter 
-        key={e.id} 
-        title={e.title} 
-        id={e.id} 
-        index={i}
-        toggleVisibility={toggleVisibility} 
-        />
-      })}
-    </>
+      <div className="input-group">
+        <input ref={newData} type="text" className="form-control" placeholder="صيغة التسبيح" aria-label=" صيغة التسبيح " />
+        <div className="input-group-append" >
+          <button onClick={handleAddCounter} className="btn btn-outline-secondary">إضافة</button>
+        </div>
+      </div>
+      <div className="container no-text-select">
+        <div className="row row-cols-md-2 row-cols-lg-3 row-cols-xlg-4 ">
+          {data.map((e, i) => {
+            return <Counter
+              key={e.id}
+              title={e.title}
+              id={e.id}
+              index={i}
+              toggleVisibility={toggleVisibility}
+            />
+          })}
+        </div>
+      </div>
+    </div>
   );
 }
 
