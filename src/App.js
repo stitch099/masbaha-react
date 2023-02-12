@@ -6,8 +6,6 @@ import {
 } from "react-share";
 import "./style.css";
 import "bootstrap/dist/css/bootstrap.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faX, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
 
 
 const LOCAL_STORAGE_KEY = "counter";
@@ -31,9 +29,7 @@ function App() {
       } catch (e) {
         console.log(e);
       }
-    } else {
-      setData(data)
-    }
+    } 
   }, [])
 
   const toggleVisibility = (id) => {
